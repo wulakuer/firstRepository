@@ -1,29 +1,32 @@
-body{
+body {
     font-family: 'Lato', sans-serif;
     color: #2d3c49;
     font-weight: 300;
 }
 
 
-source,img{
+/*source,img {
     margin: 0 auto;
+}*/
+figcaption p{
+    overflow-wrap: break-word;
 }
-.text-thin{
+.text-thin {
     font-weight: 100;
 }
-.text-muted{
+.text-muted {
     color:#7d97ad;
 }
-.title-super{
+.title-super {
     font-size: 60px;
 }
-.title-logo{
+.title-logo {
     margin:20px 0;
     height: 120px;
     width: 120px;
     display: flex;
 }
-hr{
+hr {
     border: none;
     border-top: 3px solid #7d97ad;
     width: 100%;
