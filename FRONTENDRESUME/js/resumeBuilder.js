@@ -11,10 +11,10 @@ This is empty on purpose! Your code to build the resume will go here.
         "location": "Beijing",
         "blog": "https://wulakuer.github.io/"
     },
-    "welcomeMsg": "Welcome to read the resume!",
+    "welcomeMessage": "Welcome to read the resume!",
     "skills": ["HTML","CSS","JavaScript","Bootstrap","jQuery"],
     "biopic": "images/fry.jpg",
-    "displayBio" : function() {
+    "display": function() {
         var formatName = HTMLheaderName.replace("%data%",bio.name);
         var formatRole = HTMLheaderRole.replace("%data%",bio.role);
         //var formatContact = HTMLcontactGeneric.replace().replace()
@@ -24,18 +24,14 @@ This is empty on purpose! Your code to build the resume will go here.
         var formatBlog = HTMLblog.replace("%data%",bio.contacts.blog);
         var formatLocation = HTMLlocation.replace("%data%",bio.contacts.location);
         var formatBiopic = HTMLbioPic.replace("%data%",bio.biopic);
-        var formatMsg = HTMLwelcomeMsg.replace("%data%",bio.welcomeMsg);
+        var formatMsg = HTMLwelcomeMsg.replace("%data%",bio.welcomeMessage);
 
-        $("#header").append(formatName);
-        $("#header").append(formatRole);
-        $("#header").append(formatMobile);
-        $("#header").append(formatEmail);
-        $("#header").append(formatGithub);
-        $("#header").append(formatBlog);
-        $("#header").append(formatLocation);
-        $("#header").append(formatBiopic);
-        $("#header").append(formatMsg);
-        $("#header").append(HTMLskillsStart);
+        $("#header").prepend(formatRole);
+        $("#header").prepend(formatName);
+        $("#topContacts:last").append(formatMobile,formatEmail,formatGithub,formatBlog,formatLocation);
+        $("#header").append(formatBiopic,formatMsg,HTMLskillsStart);
+        $("#footerContacts:last").append(formatMobile,formatEmail,formatGithub,formatBlog,formatLocation);
+
         bio.skills.forEach(function(skill) {
             var formatSkills = HTMLskills.replace("%data%",skill);
             $("#header").append(formatSkills);
@@ -44,7 +40,7 @@ This is empty on purpose! Your code to build the resume will go here.
     }
 };
 
-bio.displayBio();
+bio.display();
 
 var work = {
     "jobs":[
@@ -63,7 +59,7 @@ var work = {
         "description": "Junior Software Testing Engineer"
     }
     ],
-    "displayWork" : function() {
+    "display": function() {
         for (var i = 0; i < work.jobs.length; i++) {
             $("#workExperience").append(HTMLworkStart);
             var formatEmployer = HTMLworkEmployer.replace("%data%",work.jobs[i].employer);
@@ -71,15 +67,12 @@ var work = {
             var formatDates = HTMLworkDates.replace("%data%",work.jobs[i].dates);
             var formatLoc = HTMLworkLocation.replace("%data%",work.jobs[i].location);
             var formatDes = HTMLworkDescription.replace("%data%",work.jobs[i].description);
-            $(".work-entry:last").append(formatEmployer+formatTitle);
-            $(".work-entry:last").append(formatDates);
-            $(".work-entry:last").append(formatLoc);
-            $(".work-entry:last").append(formatDes);
+            $(".work-entry:last").append(formatEmployer+formatTitle,formatDates,formatLoc,formatDes);
         }
     }
 };
 
-work.displayWork();
+work.display();
 
 var projects = {
     "projects": [
@@ -87,36 +80,36 @@ var projects = {
         "title": "resume",
         "dates": "20170826",
         "description": "interactive resume of front-end developer",
-        "images": "images/resume.jpg"
+        "images": ["images/resume.jpg","images/blog.jpg"]
     },
     {
         "title": "pofortlios",
         "dates": "20170820",
         "description": "This is a display for a website which can responsive to different devices with different DPR, also responsive to different resolution.",
-        "images": "images/porfortlios.jpg"
+        "images": ["images/porfortlios.jpg",,"images/blog.jpg"]
     },
     {
         "title": "blog",
         "dates": "20170720",
         "description": "Format an article with CSS and HTML",
-        "images": "images/blog.jpg"
+        "images": ["images/blog.jpg","images/blog.jpg"]
     }
     ],
-    "displayProjects" : function() {
+    "display": function() {
         for (var i = 0; i < projects.projects.length; i++) {
             $("#projects").append(HTMLprojectStart);
             var formatTitle = HTMLprojectTitle.replace("%data%",projects.projects[i].title);
             var formatDates = HTMLprojectDates.replace("%data%",projects.projects[i].dates);
             var formatDes = HTMLprojectDescription.replace("%data%",projects.projects[i].description);
-            var formatImg = HTMLprojectImage.replace("%data%",projects.projects[i].images);
-            $(".project-entry:last").append(formatTitle);
-            $(".project-entry:last").append(formatDates);
-            $(".project-entry:last").append(formatDes);
-            $(".project-entry:last").append(formatImg);
+            $(".project-entry:last").append(formatTitle,formatDates,formatDes);
+            projects.projects[i].images.forEach(function(img){
+                 var formatImg = HTMLprojectImage.replace("%data%",img);
+                 $(".project-entry:last").append(formatImg);
+            });
         }
     }
 };
-projects.displayProjects();
+projects.display();
 
 var education = {
     "schools": [{
@@ -125,8 +118,8 @@ var education = {
         "location": "Dalian",
         "dates": "2010",
         "graduationYear": "2013",
-        "url": "https://example.com",
-        "Majors": ["Computer Science","English"]
+        "url": "https://classroom.udacity.com/",
+        "majors": ["Computer Science","English"]
     },
     {
         "name": "Dalian University of Technology",
@@ -134,8 +127,8 @@ var education = {
         "location": "Dalian",
         "dates": "2006",
         "graduationYear": "2010",
-        "url": "https://example.com",
-        "Majors": ["Software Engineering","English"]
+        "url": "https://classroom.udacity.com/",
+        "majors": ["Software Engineering","English"]
     }
   ],
   "onlineCourses": [{
@@ -145,18 +138,16 @@ var education = {
         "url": "https://classroom.udacity.com/"
   }
   ],
-  "displayEdu" : function() {
+  "display": function() {
         for (var i = 0; i < education.schools.length; i++) {
             $("#education").append(HTMLschoolStart);
             var formatName = HTMLschoolName.replace("%data%",education.schools[i].name);
+           // HTMLschoolName = HTMLschoolName.replace("#",education.schools[i].url);
             var formatDegree = HTMLschoolDegree.replace("%data%",education.schools[i].degree);
             var formatDates = HTMLschoolDates.replace("%data%",education.schools[i].dates);
             var formatLoc = HTMLschoolLocation.replace("%data%",education.schools[i].location);
-            var formatMajors = HTMLschoolMajor.replace("%data%",education.schools[i].Majors);
-            $(".education-entry:last").append(formatName + formatDegree);
-            $(".education-entry:last").append(formatDates);
-            $(".education-entry:last").append(formatLoc);
-            $(".education-entry:last").append(formatMajors);
+            var formatMajors = HTMLschoolMajor.replace("%data%",education.schools[i].majors);
+            $(".education-entry:last").append((formatName + formatDegree).replace("#",education.schools[i].url),formatDates,formatLoc,formatMajors);
         }
         $("#education").append(HTMLonlineClasses);
         for (var j = 0; j < education.onlineCourses.length; j++) {
@@ -164,12 +155,10 @@ var education = {
             var formatTitleOn = HTMLonlineTitle.replace("%data%",education.onlineCourses[j].title);
             var formatSchoolOn = HTMLonlineSchool.replace("%data%",education.onlineCourses[j].school);
             var formatDatesOn = HTMLonlineDates.replace("%data%",education.onlineCourses[j].dates);
-            var oformatURLOn = HTMLonlineURL.replace("%data%",education.onlineCourses[j].url);
-            $(".education-entry:last").append(formatTitleOn + formatSchoolOn);
-            $(".education-entry:last").append(formatDatesOn);
-            $(".education-entry:last").append(oformatURLOn);
+            var formatURLOn = HTMLonlineURL.replace("%data%",education.onlineCourses[j].url);
+            $(".education-entry:last").append((formatTitleOn + formatSchoolOn).replace("#",education.onlineCourses[j].url),formatDatesOn,formatURLOn.replace("#",education.onlineCourses[j].url));
         }
     }
  };
-education.displayEdu();
+education.display();
 $("#mapDiv").append(googleMap);
